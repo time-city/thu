@@ -83,9 +83,12 @@ function startHolding(e) {
     if (hasOpened) return; // Nếu đã vào màn hình trong thì vô hiệu hóa nút
     if (e.type === 'touchstart') e.preventDefault();
 
-    // MẸO IOS: Đánh thức audio ngay khi vừa chạm tay để xin quyền phát nhạc trước
+    // MẸO IOS: Đánh thức audio VÀ VIDEO ngay khi vừa chạm tay để xin quyền phát (unlock) từ người dùng
     if (bgMusic.paused) {
         bgMusic.play().then(() => bgMusic.pause()).catch(err => console.log(err));
+    }
+    if (introVideo.paused) {
+        introVideo.play().then(() => introVideo.pause()).catch(err => console.log(err));
     }
 
     isHolding = true;
@@ -133,21 +136,13 @@ function stopHolding() {
     if (isReadyToOpen) {
         hasOpened = true; // Đánh dấu là đã mở quà để chặn các lần chạm sau
         
-        // QUAN TRỌNG: Phải hiện màn hình video ra TRƯỚC (nhưng để opacity 0) thì Safari mới chịu play video
-        videoScreen.style.opacity = '0';
-        videoScreen.style.display = 'flex';
-        
-        // FIX: Phải gọi play() ngay lập tức trong event touchend/mouseup thì Safari/iOS mới cho phép phát âm thanh & video
+        // Vì videoScreen đã được bật (display: flex) và ẩn sau unboxScreen, 
+        // ta có thể thoải mái gọi play() mà không lo bị Safari chặn.
         bgMusic.play().catch(e => console.error("Audio play failed:", e));
         
-        // Gán lại src và gọi load() để đảm bảo video không bị đơ trên iOS
         introVideo.src = playlist[currentVideoIndex];
         introVideo.load();
         
-        // Ép trình duyệt tính toán lại giao diện NGAY LẬP TỨC để nó nhận ra màn hình video đã được bật
-        void videoScreen.offsetWidth;
-
-        // Video đã được muted nên có thể thoải mái play() mà không sợ Safari chặn
         introVideo.play().catch(e => {
             videoTimer.innerText = "Lỗi: " + e.name;
         });
@@ -159,10 +154,8 @@ function stopHolding() {
         instruction.style.opacity = '0';
 
         setTimeout(() => {
-            // Hiện màn hình video rõ dần lên
-            videoScreen.style.opacity = '1';
-
-            // Ẩn hộp quà sau khi chuyển cảnh xong
+            // Làm mờ và ẩn hộp quà đi để lộ màn hình video bên dưới
+            unboxScreen.style.opacity = '0';
             setTimeout(() => {
                 unboxScreen.style.display = 'none';
             }, 1000);

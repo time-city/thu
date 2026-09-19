@@ -132,14 +132,14 @@ body {
 
 /* --- MÀN HÌNH VIDEO CHUYỂN TIẾP --- */
 #video-screen {
-    display: none; /* Ẩn mặc định */
+    display: flex; /* Bật sẵn để Safari không đóng băng video */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: #000;
-    z-index: 1000;
+    z-index: 10; /* Nằm dưới unbox-screen (999) */
     align-items: center;
     justify-content: center;
     flex-direction: column;
