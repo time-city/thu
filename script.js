@@ -18,6 +18,7 @@ let animationFrame;
 const requiredHoldTime = 2000; // Thời gian giữ (2 giây)
 let isHolding = false;
 let isReadyToOpen = false;
+let hasOpened = false; // Cờ đánh dấu đã mở quà thành công
 let startTime;
 
 const playlist = ['assets/IMG_7319.mp4', 'assets/IMG_7320.mp4'];
@@ -79,6 +80,7 @@ const lyrics = [
 let currentLyricIndex = -1;
 
 function startHolding(e) {
+    if (hasOpened) return; // Nếu đã vào màn hình trong thì vô hiệu hóa nút
     if (e.type === 'touchstart') e.preventDefault();
 
     isHolding = true;
@@ -118,10 +120,13 @@ function startHolding(e) {
 }
 
 function stopHolding() {
+    if (hasOpened) return; // Bỏ qua nếu đã mở
+    
     isHolding = false;
     cancelAnimationFrame(animationFrame);
 
     if (isReadyToOpen) {
+        hasOpened = true; // Đánh dấu là đã mở quà để chặn các lần chạm sau
         // FIX: Phải gọi play() ngay lập tức trong event touchend/mouseup thì Safari/iOS mới cho phép phát âm thanh & video
         bgMusic.play().catch(e => console.error("Audio play failed:", e));
         
