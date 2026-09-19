@@ -83,6 +83,11 @@ function startHolding(e) {
     if (hasOpened) return; // Nếu đã vào màn hình trong thì vô hiệu hóa nút
     if (e.type === 'touchstart') e.preventDefault();
 
+    // MẸO IOS: Đánh thức audio ngay khi vừa chạm tay để xin quyền phát nhạc trước
+    if (bgMusic.paused) {
+        bgMusic.play().then(() => bgMusic.pause()).catch(err => console.log(err));
+    }
+
     isHolding = true;
     isReadyToOpen = false;
     progressSvg.style.opacity = '1';
@@ -127,6 +132,11 @@ function stopHolding() {
 
     if (isReadyToOpen) {
         hasOpened = true; // Đánh dấu là đã mở quà để chặn các lần chạm sau
+        
+        // QUAN TRỌNG: Phải hiện màn hình video ra TRƯỚC (nhưng để opacity 0) thì Safari mới chịu play video
+        videoScreen.style.opacity = '0';
+        videoScreen.style.display = 'flex';
+        
         // FIX: Phải gọi play() ngay lập tức trong event touchend/mouseup thì Safari/iOS mới cho phép phát âm thanh & video
         bgMusic.play().catch(e => console.error("Audio play failed:", e));
         
@@ -144,12 +154,8 @@ function stopHolding() {
         instruction.style.opacity = '0';
 
         setTimeout(() => {
-            // Hiện màn hình video mờ mờ rồi rõ dần lên
-            videoScreen.style.opacity = '0';
-            videoScreen.style.display = 'flex';
-            setTimeout(() => {
-                videoScreen.style.opacity = '1';
-            }, 50);
+            // Hiện màn hình video rõ dần lên
+            videoScreen.style.opacity = '1';
 
             // Ẩn hộp quà sau khi chuyển cảnh xong
             setTimeout(() => {
