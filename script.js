@@ -124,7 +124,11 @@ function stopHolding() {
     if (isReadyToOpen) {
         // FIX: Phải gọi play() ngay lập tức trong event touchend/mouseup thì Safari/iOS mới cho phép phát âm thanh & video
         bgMusic.play().catch(e => console.error("Audio play failed:", e));
-        introVideo.src = playlist[currentVideoIndex];
+        
+        // Không gán lại src cho video đầu tiên để tránh Safari hủy lệnh play
+        if (!introVideo.src || !introVideo.src.includes(playlist[currentVideoIndex])) {
+            introVideo.src = playlist[currentVideoIndex];
+        }
         introVideo.play().catch(e => console.error("Video play failed:", e));
 
         // Nổ bung hiệu ứng ripple
@@ -217,3 +221,8 @@ window.addEventListener('mouseup', stopHolding);
 boxContainer.addEventListener('touchstart', startHolding, { passive: false });
 window.addEventListener('touchend', stopHolding);
 window.addEventListener('touchcancel', stopHolding);
+
+// CHẶN MỌI THAO TÁC TOUCH (DOUBLE TAP TUA VIDEO) LÊN MÀN HÌNH VIDEO Ở IOS
+videoScreen.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+}, { passive: false });
