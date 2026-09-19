@@ -153,6 +153,7 @@ body {
     height: auto;
     outline: none;
     box-shadow: 0 0 30px rgba(0,0,0,0.8);
+    pointer-events: none; /* CHẶN DOUBLE TAP / CHẠM VÀO VIDEO */
 }
 
 #lyrics-container {

@@ -122,6 +122,11 @@ function stopHolding() {
     cancelAnimationFrame(animationFrame);
 
     if (isReadyToOpen) {
+        // FIX: Phải gọi play() ngay lập tức trong event touchend/mouseup thì Safari/iOS mới cho phép phát âm thanh & video
+        bgMusic.play().catch(e => console.error("Audio play failed:", e));
+        introVideo.src = playlist[currentVideoIndex];
+        introVideo.play().catch(e => console.error("Video play failed:", e));
+
         // Nổ bung hiệu ứng ripple
         ripple.classList.add('explode');
         boxEmoji.style.transform = 'scale(0)';
@@ -129,7 +134,17 @@ function stopHolding() {
         instruction.style.opacity = '0';
 
         setTimeout(() => {
-            openGiftSequence();
+            // Hiện màn hình video mờ mờ rồi rõ dần lên
+            videoScreen.style.opacity = '0';
+            videoScreen.style.display = 'flex';
+            setTimeout(() => {
+                videoScreen.style.opacity = '1';
+            }, 50);
+
+            // Ẩn hộp quà sau khi chuyển cảnh xong
+            setTimeout(() => {
+                unboxScreen.style.display = 'none';
+            }, 1000);
         }, 600); // Chờ hiệu ứng ripple nổ xong rồi mới chuyển cảnh
     } else {
         progressFill.style.strokeDashoffset = 283;
@@ -139,20 +154,6 @@ function stopHolding() {
         instruction.innerText = "Nhấn giữ bông hoa nhé cục vàng ❤️";
         instruction.style.color = "#ffffff";
     }
-}
-
-function openGiftSequence() {
-    // Ẩn hộp quà, hiện màn hình video
-    unboxScreen.style.opacity = '0';
-    setTimeout(() => {
-        unboxScreen.style.display = 'none';
-        videoScreen.style.display = 'flex';
-
-        // Bắt đầu phát nhạc và video
-        bgMusic.play().catch(e => console.error("Audio play failed:", e));
-        introVideo.src = playlist[currentVideoIndex];
-        introVideo.play().catch(e => console.error("Video play failed:", e));
-    }, 800);
 }
 
 // Xử lý chuyển video khi hết
