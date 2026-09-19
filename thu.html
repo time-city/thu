@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi Em Bé Của Anh</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <audio id="bg-music" src="assets/bgmusic.mp3" loop></audio>
+
+    <!-- MÀN HÌNH MỞ QUÀ -->
+    <div id="unbox-screen">
+        <div class="box-container" id="box-container">
+            <svg class="progress-svg" viewBox="0 0 100 100">
+                <circle class="progress-track" cx="50" cy="50" r="45"></circle>
+                <circle class="progress-fill" cx="50" cy="50" r="45"></circle>
+            </svg>
+            <div class="ripple" id="ripple"></div>
+            <div class="box" id="box-emoji">🌻</div>
+        </div>
+        <div class="instruction">Nhấn giữ bông hoa nhé cục vàng</div>
+    </div>
+
+    <!-- MÀN HÌNH TRÌNH CHIẾU VIDEO -->
+    <div id="video-screen">
+        <video id="intro-video" playsinline muted></video>
+        <div id="lyrics-container"></div>
+        <div id="video-timer">00:00 / 00:00</div>
+    </div>
+
+    <!-- MÀN HÌNH CHÍNH -->
+    <div id="main-screen">
+        <div class="content-wrapper">
+
+            <!-- 3 BỨC ẢNH XUNG QUANH -->
+            <div class="polaroid p1">
+                <video autoplay loop muted playsinline src="assets/IMG_7319.mp4"></video>
+            </div>
+            <div class="polaroid p2">
+                <video autoplay loop muted playsinline src="assets/IMG_7320.mp4"></video>
+            </div>
+            <div class="polaroid p3">
+                <img src="assets/IMG_7322.jpeg" alt="Pic 3">
+            </div>
+
+            <!-- BỨC THƯ NẰM GIỮA -->
+            <div class="letter-container">
+                <div class="date">3h sáng 19/9</div>
+                <p>Chào em bé của anh, sáng nay anh lại suy nghĩ vẩn vơ, và như mọi khi, cứ nghĩ nhiều là anh lại muốn
+                    viết chút gì đó gửi cho em.</p>
+                <p>Chuyện là dạo gần đây đôi mình có chút xích mích. Anh biết là do anh ghen, rồi thỉnh thoảng cư xử hơi
+                    trẻ con làm cục vàng buồn. Hôm kia anh lỡ nói mấy câu vô tư không để ý khiến em khó chịu, anh thực
+                    sự không cố ý, anh xin lỗi em vì những lời nói đó nhé. Có lẽ khi yêu, đôi khi anh lại quên đi sự
+                    trưởng thành để được sống với những cảm xúc chân thật nhất. Trẻ con một xíu thôi, nhưng chắc chắn
+                    anh không vô tâm đâu.</p>
+                <p>Anh thương em nhiều lắm. Những lúc nhớ mà không có em bên cạnh, anh hay thấy chạnh lòng. Cứ sáng sớm
+                    thức dậy là trong lòng lại thổn thức nhớ em, chắc tại anh thương em quá, </p>
+                <p>Mỗi lần e gặp chuyện gì về tâm lí là a sót lắm vợ của anh ơi. Anh chỉ mong bên cạnh e để anh ủi thoi,
+                    cố gắng qua giai đoạn này là chúng ta lại gặp nhau rồi a sẽ bù đắp khoảng thời gian mà không có a
+                    bên cạnh nhé vợ iu.</p>
+                <p>Việc em dự định gác lại ý định đi Đức khiến anh tự nhủ mình càng phải có trách nhiệm lớn hơn với
+                    em và tương lai của đôi mình. Cục vàng luôn là động lực lớn nhất để anh cố gắng mỗi ngày. Anh biết
+                    em đang phải chịu rất nhiều áp lực, anh chỉ mong em bớt suy nghĩ lại và đừng ôm mọi thứ một mình. Có
+                    chuyện gì hãy cứ chia sẻ với anh, để hai đứa cùng nhau giải quyết nha.</p>
+                <p>Tuần này trôi qua chậm thật, chắc do anh đếm từng ngày ngóng gặp em quá. Hai đứa mình cùng cố gắng
+                    nhé. Tương lai của anh nhất định phải có em, anh sẽ không bao giờ để mất em đâu. Anh yêu em</p>
+                <p style="text-align: right; margin-top: 30px;"><strong>Ck béo quê miền trung</strong></p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT XỬ LÝ NHẤN GIỮ -->
+    <script src="script.js"></script>
+</body>
+
+</html>

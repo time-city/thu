@@ -1,0 +1,357 @@
+:root {
+    --primary: #ff6b81;
+    --bg-color: #13293d;
+    --text: #2d3436;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text);
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* --- MÀN HÌNH MỞ QUÀ --- */
+#unbox-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    z-index: 999;
+    transition: opacity 1s ease;
+}
+
+.box-container {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    font-size: 70px;
+    z-index: 2;
+    position: relative;
+    transition: transform 0.1s ease-out, filter 0.1s ease-out;
+}
+
+.progress-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg); /* Bắt đầu từ đỉnh 12h */
+    z-index: 1;
+    transition: opacity 0.3s;
+}
+
+.progress-track {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 4;
+}
+
+.progress-fill {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 283; /* 2 * pi * 45 ~ 283 */
+    stroke-dashoffset: 283;
+    transition: stroke-dashoffset 0.1s linear, stroke 0.3s;
+}
+
+.ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+    opacity: 0;
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.ripple.explode {
+    animation: explodeAnim 0.8s ease-out forwards;
+}
+
+@keyframes explodeAnim {
+    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.8; }
+    100% { transform: translate(-50%, -50%) scale(4); opacity: 0; }
+}
+
+.instruction {
+    margin-top: 30px;
+    font-size: 1.1rem;
+    color: #ffffff;
+    font-weight: 500;
+    animation: pulse 2s infinite;
+    text-align: center;
+    padding: 0 20px;
+    transition: opacity 0.3s, color 0.3s;
+    letter-spacing: 0.5px;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.05);
+        color: var(--primary);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+}
+
+/* --- MÀN HÌNH VIDEO CHUYỂN TIẾP --- */
+#video-screen {
+    display: none; /* Ẩn mặc định */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: opacity 1s ease;
+}
+
+#intro-video {
+    max-width: 100%;
+    max-height: 100vh;
+    width: auto;
+    height: auto;
+    outline: none;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8);
+}
+
+#lyrics-container {
+    position: absolute;
+    bottom: 80px;
+    width: 100%;
+    text-align: center;
+    padding: 0 20px;
+    z-index: 1002;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.lyric-line {
+    font-size: 1rem;
+    color: #ffffff;
+    font-weight: 500;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.8), 0 0 15px rgba(0,0,0,0.5);
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+    opacity: 0;
+    animation: fadeInLyric 0.5s ease-out forwards;
+}
+
+@keyframes fadeInLyric {
+    0% {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#video-timer {
+    position: absolute;
+    top: 30px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 15px;
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 500;
+    font-family: monospace;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    z-index: 1001;
+    pointer-events: none; /* Không cho click */
+}
+
+/* --- MÀN HÌNH CHÍNH (THƯ + ẢNH XUNG QUANH) --- */
+#main-screen {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.content-wrapper {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+/* BỨC THƯ */
+.letter-container {
+    background: #ffffff;
+    padding: 40px 30px;
+    border-radius: 8px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    max-width: 550px;
+    width: 100%;
+    box-sizing: border-box;
+    line-height: 1.8;
+    position: relative;
+    z-index: 10;
+}
+
+.letter-container::before {
+    content: "❤️";
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 45px;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.date {
+    color: #7f8c8d;
+    font-style: italic;
+    text-align: right;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    border-bottom: 1px dashed #bdc3c7;
+    padding-bottom: 10px;
+}
+
+/* ẢNH POLAROID BỐ TRÍ XUNG QUANH */
+.polaroid {
+    background: #fff;
+    padding: 10px 10px 35px 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    width: 160px;
+    z-index: 5;
+    transition: transform 0.4s ease, z-index 0.4s ease;
+    cursor: pointer;
+}
+
+.polaroid img, .polaroid video {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    display: block;
+    border: 1px solid #eee;
+}
+
+.polaroid:hover {
+    transform: scale(1.15) rotate(0deg) !important;
+    z-index: 20;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Vị trí 3 ảnh trên Desktop */
+.p1 {
+    top: 10%;
+    left: 10%;
+    transform: rotate(-12deg);
+}
+
+.p2 {
+    top: 15%;
+    right: 10%;
+    transform: rotate(15deg);
+}
+
+.p3 {
+    bottom: 10%;
+    left: 8%;
+    transform: rotate(8deg);
+}
+
+/* Responsive - Mobile & Tablet */
+@media (max-width: 900px) {
+    .p1 { left: 2%; top: 5%; }
+    .p2 { right: 2%; top: 8%; }
+    .p3 { right: 2%; bottom: 5%; }
+}
+
+@media (max-width: 768px) {
+    .content-wrapper {
+        padding: 180px 15px 160px 15px; /* Tạo không gian lớn ở trên và dưới cho ảnh */
+    }
+
+    .letter-container {
+        padding: 30px 20px;
+        font-size: 0.95rem;
+        margin: 0; /* Bỏ margin vì đã dùng padding ở wrapper */
+    }
+
+    .polaroid {
+        width: 90px; /* Thu nhỏ ảnh một chút trên mobile */
+        padding: 6px 6px 20px 6px;
+        z-index: 15; /* Nổi lên trên thư để dễ bấm nếu có đè một chút */
+    }
+
+    /* Bố trí lại 3 ảnh: 2 ảnh ở trên, 1 ảnh ở dưới */
+    .p1 {
+        top: 30px;
+        left: 10px;
+        transform: rotate(-12deg);
+    }
+
+    .p2 {
+        top: 40px;
+        right: 10px;
+        transform: rotate(15deg);
+    }
+
+    .p3 {
+        bottom: 30px;
+        left: 50%;
+        margin-left: -45px;
+        transform: rotate(8deg);
+    }
+}
