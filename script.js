@@ -130,10 +130,11 @@ function stopHolding() {
         // FIX: Phải gọi play() ngay lập tức trong event touchend/mouseup thì Safari/iOS mới cho phép phát âm thanh & video
         bgMusic.play().catch(e => console.error("Audio play failed:", e));
         
-        // Không gán lại src cho video đầu tiên để tránh Safari hủy lệnh play
-        if (!introVideo.src || !introVideo.src.includes(playlist[currentVideoIndex])) {
-            introVideo.src = playlist[currentVideoIndex];
-        }
+        // Gán lại src và gọi load() để đảm bảo video không bị đơ trên iOS
+        introVideo.src = playlist[currentVideoIndex];
+        introVideo.load();
+        
+        // Video đã được muted nên có thể thoải mái play() mà không sợ Safari chặn
         introVideo.play().catch(e => console.error("Video play failed:", e));
 
         // Nổ bung hiệu ứng ripple
@@ -170,6 +171,7 @@ introVideo.addEventListener('ended', () => {
     currentVideoIndex++;
     if (currentVideoIndex < playlist.length) {
         introVideo.src = playlist[currentVideoIndex];
+        introVideo.load();
         introVideo.play().catch(e => console.error("Video play failed:", e));
     } else {
         showMainLetter();
