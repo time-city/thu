@@ -144,8 +144,13 @@ function stopHolding() {
         introVideo.src = playlist[currentVideoIndex];
         introVideo.load();
         
+        // Ép trình duyệt tính toán lại giao diện NGAY LẬP TỨC để nó nhận ra màn hình video đã được bật
+        void videoScreen.offsetWidth;
+
         // Video đã được muted nên có thể thoải mái play() mà không sợ Safari chặn
-        introVideo.play().catch(e => console.error("Video play failed:", e));
+        introVideo.play().catch(e => {
+            videoTimer.innerText = "Lỗi: " + e.name;
+        });
 
         // Nổ bung hiệu ứng ripple
         ripple.classList.add('explode');
